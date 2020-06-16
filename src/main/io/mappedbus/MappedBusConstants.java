@@ -22,14 +22,18 @@ public class MappedBusConstants {
 	public static class Structure {
 		
 		public static final int Limit = 0;
+
+		public static final int UniqueId = Length.UniqueId;
 		
-		public static final int Data = Length.Limit;
+		public static final int Data = UniqueId + Length.Limit;
 		
 	}
 
 	public static class Length {
 		
 		public static final int Limit = 8;
+
+		public static final int UniqueId = 8;
 		
 		public static final int StatusFlag = 4;
 		

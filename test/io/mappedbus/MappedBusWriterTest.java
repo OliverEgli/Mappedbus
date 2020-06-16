@@ -78,6 +78,31 @@ public class MappedBusWriterTest {
 		writer.write(priceUpdate);
 		assertEquals(Structure.Data + 2 * (Length.StatusFlag + Length.Metadata + RECORD_SIZE), mem.getLongVolatile(Structure.Limit));
 	}
+
+	@Test public void testWriteUniqueId() throws Exception {
+		MappedBusWriter writer = new MappedBusWriter(FILE_NAME, FILE_SIZE, RECORD_SIZE);
+		writer.open();
+
+		MemoryMappedFile mem = new MemoryMappedFile(FILE_NAME, FILE_SIZE);
+
+		PriceUpdate priceUpdate = new PriceUpdate();
+		writer.write(priceUpdate);
+		assertEquals(Structure.Data + Length.StatusFlag + Length.Metadata + RECORD_SIZE , mem.getLongVolatile(Structure.Limit));
+
+		assertEquals(0, writer.getUniqueId());
+		assertEquals(1, writer.getUniqueId());
+		assertEquals(2, writer.getUniqueId());
+		assertEquals(3, writer.getUniqueId());
+
+		writer.write(priceUpdate);
+		assertEquals(Structure.Data + 2 * (Length.StatusFlag + Length.Metadata + RECORD_SIZE), mem.getLongVolatile(Structure.Limit));
+
+		writer.close();
+		writer.open();
+
+		assertEquals(4, writer.getUniqueId());
+
+	}
 	
 	class PriceUpdate implements MappedBusMessage {
 		

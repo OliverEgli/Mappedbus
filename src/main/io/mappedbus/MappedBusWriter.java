@@ -137,6 +137,10 @@ public class MappedBusWriter {
 		return limit;
 	}
 
+	public long getUniqueId() throws EOFException {
+		return mem.getAndAddLong(Structure.UniqueId, 1);
+	}
+
 	protected boolean commit(long commitPos) {
 		return mem.compareAndSwapInt(commitPos, StatusFlag.NotSet, StatusFlag.Commit);
 	}
